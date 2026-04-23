@@ -1,6 +1,6 @@
 # Hello LangGraph
 
-Learning LangGraph fundamentals through five progressive examples.
+Learning LangGraph fundamentals through progressive examples.
 
 ## Examples
 
