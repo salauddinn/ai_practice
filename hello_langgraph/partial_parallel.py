@@ -24,15 +24,19 @@ graph.add_node("fin", financial_department_check)
 graph.add_node("lib", library_department_check)
 graph.add_node("sports", sports_department_check)
 
-# sequtienal graph
+
+# parallel graph
 graph.add_edge(START, "fin")
-graph.add_edge("fin", "lib")  
-graph.add_edge("lib", "sports")
+graph.add_edge(START, "lib")
+graph.add_edge(START, "sports")
+
+graph.add_edge("fin", END)
+graph.add_edge("lib", END)
 graph.add_edge("sports", END)
 
 if __name__ == "__main__":
     compile_graph= graph.compile()
     response = compile_graph.invoke(
-        {"student_id": "i1001", 
+        {"student_id": "", 
          })
     print(response)
