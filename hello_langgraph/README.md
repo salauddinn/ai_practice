@@ -1,6 +1,6 @@
 # Hello LangGraph
 
-Learning LangGraph fundamentals through three progressive examples.
+Learning LangGraph fundamentals through four progressive examples.
 
 ## Examples
 
@@ -42,6 +42,19 @@ START ──┼→ lib ──→┼── END
 - **Pattern**: Multiple edges from `START` cause nodes to execute concurrently
 - **Lesson**: Partial returns are essential for parallel execution — if nodes mutated shared state directly, you'd get race conditions
 
+### 4. `parallel.py` — Parallel with Key Collision (Intentional)
+
+Two nodes run in parallel but both write to the **same key** (`message`).
+
+```
+START ──┬→ friend →┬── END
+        └→ enemy ──┘
+```
+
+- **State**: `student`, `message`
+- **Pattern**: Both nodes return `{"message": ...}` — last write wins
+- **Lesson**: Demonstrates that when parallel nodes write to the same key, one overwrites the other. To collect both, use a `list` with an `Annotated` reducer.
+
 ## Key Concepts
 
 | Concept | Description |
@@ -58,4 +71,5 @@ START ──┼→ lib ──→┼── END
 uv run python hello.py
 uv run python partial.py
 uv run python partial_parallel.py
+uv run python parallel.py
 ```
