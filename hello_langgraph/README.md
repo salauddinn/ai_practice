@@ -1,6 +1,6 @@
 # Hello LangGraph
 
-Learning LangGraph fundamentals through four progressive examples.
+Learning LangGraph fundamentals through five progressive examples.
 
 ## Examples
 
@@ -42,7 +42,21 @@ START ──┼→ lib ──→┼── END
 - **Pattern**: Multiple edges from `START` cause nodes to execute concurrently
 - **Lesson**: Partial returns are essential for parallel execution — if nodes mutated shared state directly, you'd get race conditions
 
-### 4. `parallel.py` — Parallel with Key Collision (Intentional)
+### 4. `conditionals.py` — Conditional Routing
+
+Routes a query to different department nodes based on keywords using `add_conditional_edges`.
+
+```
+              ┌→ fin ───→┐
+START ─?──────┼→ sport ──┼── END
+              └→ adm ───→┘
+```
+
+- **State**: `query`, `response`
+- **Pattern**: A router function inspects the query and returns a string key; `add_conditional_edges` maps each key to a target node
+- **Lesson**: Use conditional edges to branch the graph dynamically at runtime based on state
+
+### 5. `parallel.py` — Parallel with Key Collision (Intentional)
 
 Two nodes run in parallel but both write to the **same key** (`message`).
 
@@ -64,6 +78,7 @@ START ──┬→ friend →┬── END
 | **Edge** | Defines execution order between nodes |
 | **Partial Return** | Returning only changed keys — LangGraph merges the rest |
 | **Parallel Edges** | Multiple edges from the same node run targets concurrently |
+| **Conditional Edges** | Route to different nodes based on a function's return value |
 
 ## Running
 
@@ -71,5 +86,6 @@ START ──┬→ friend →┬── END
 uv run python hello.py
 uv run python partial.py
 uv run python partial_parallel.py
+uv run python conditionals.py
 uv run python parallel.py
 ```
