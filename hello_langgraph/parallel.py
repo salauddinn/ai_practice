@@ -11,12 +11,18 @@ import operator
 #   - operator.add on lists = concatenate the lists together
 #   - Without Annotated, LangGraph just replaces the old value (last write wins)
 
+def my_choice(exisitng,new):
+    """this is a custom reducer function that takes the existing value and the new value and returns the new value
+    """
+    return new
 class State(TypedDict):
     """this class represents the state of class
     """
     # Annotated[list[str], operator.add] means:
     #   Type = list[str], Reducer = operator.add (list concatenation)
     message: Annotated[list[str],operator.add]
+    # message: Annotated[list[str],my_choice]
+
     student: str
 
 def message_from_friend(state: State) -> State:
