@@ -4,7 +4,8 @@
     "hello": "hello:graph",
     "partial-sequence": "partial:graph",
     "partial-parallel": "partial_parallel:graph",
-       "conditionals": "conditionals:graph"
+    "conditionals": "conditionals:graph",
+    "loops": "loop:graph"
   },
   "env": ".env"
 }
