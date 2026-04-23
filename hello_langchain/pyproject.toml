@@ -1,0 +1,15 @@
+[project]
+name = "hello-langchain"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11.8"
+dependencies = [
+    "dotenv>=0.9.9",
+    "langchain>=1.2.15",
+    "langchain-community>=0.4.1",
+    "langchain-core>=1.2.26",
+    "langchain-google-genai>=4.2.1",
+    "langchain-tavily>=0.2.17",
+    "yfinance>=1.2.2",
+]
