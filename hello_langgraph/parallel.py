@@ -1,21 +1,36 @@
 from typing import TypedDict
 
 from langgraph.graph import StateGraph,START,END
-# typeDict example in python
+from typing_extensions import Annotated
+import operator
+
+# Annotated is a Python typing feature that lets you attach metadata to a type.
+# Syntax: Annotated[Type, metadata]
+# In LangGraph, the metadata is a "reducer" function that tells LangGraph
+# HOW to merge values when multiple nodes return the same key.
+#   - operator.add on lists = concatenate the lists together
+#   - Without Annotated, LangGraph just replaces the old value (last write wins)
+
 class State(TypedDict):
     """this class represents the state of class
     """
-    message: str
+    # Annotated[list[str], operator.add] means:
+    #   Type = list[str], Reducer = operator.add (list concatenation)
+    message: Annotated[list[str],operator.add]
     student: str
 
 def message_from_friend(state: State) -> State:
-    return {"message": "You will win!"}
+    return {"message": ["You will win!"]}
 
 def message_from_enemy(state: State) -> State:
-    return {"message": "You will  die trying but not win!"}
+    return {"message": ["You will  die trying but not win!"]}
 
-# Intentional: both nodes write to the same "message" key to demonstrate
-# that in parallel execution, one result will overwrite the other (last write wins).
+# Problem: When parallel nodes write to the same key (e.g., "message": str),
+# one result overwrites the other (last write wins) — you lose data.
+#
+# Fix: Use Annotated[list[str], operator.add] as a reducer.
+# This tells LangGraph to append (operator.add) both results into a single list
+# instead of overwriting. Output: ["You will win!", "You will die trying..."]
 graph = StateGraph(State);
 graph.add_node("friend", message_from_friend)
 graph.add_node("enemy", message_from_enemy)
