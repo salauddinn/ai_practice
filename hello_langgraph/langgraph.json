@@ -5,7 +5,8 @@
     "partial-sequence": "partial:graph",
     "partial-parallel": "partial_parallel:graph",
     "conditionals": "conditionals:graph",
-    "loops": "loop:graph"
+    "loops": "loop:graph",
+    "react-demo": "novice/react_demo.py:compile_graph"
   },
   "env": ".env"
 }

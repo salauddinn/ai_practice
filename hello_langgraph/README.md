@@ -69,6 +69,19 @@ START ──┬→ friend →┬── END
 - **Pattern**: Both nodes return `{"message": ...}` — last write wins
 - **Lesson**: Demonstrates that when parallel nodes write to the same key, one overwrites the other. To collect both, use a `list` with an `Annotated` reducer.
 
+### 6. `novice/react_demo.py` — ReAct Agent (LLM + Tools)
+
+A ReAct-style agent that lets a Gemini LLM reason and call tools (`multiply`, `add`, `subtract`, `get_weather`) in a loop until it produces a final answer.
+
+```
+START → llm ──(tool_calls?)──┬── yes →  tools → llm → ...
+                             └── no  →  END
+```
+
+- **State**: `messages` (a list of `BaseMessage`, reduced with `add_messages`)
+- **Pattern**: `llm.bind_tools(...)` lets the model emit `tool_calls`; the prebuilt `ToolNode` executes them and feeds results back to the LLM
+- **Lesson**: Conditional edges + a back-edge from `tools → llm` form the classic ReAct loop. Requires `GOOGLE_CLOUD_PROJECT` in `.env` and Vertex AI access.
+
 ## Key Concepts
 
 | Concept | Description |
@@ -88,4 +101,5 @@ uv run python partial.py
 uv run python partial_parallel.py
 uv run python conditionals.py
 uv run python parallel.py
+uv run python novice/react_demo.py
 ```
