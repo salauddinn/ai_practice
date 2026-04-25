@@ -71,24 +71,33 @@ def llm_node(state: AgentState) -> str:
     response = llm_with_tools.invoke(state['messages'])
     return {"messages":[response]}
 
-def route_tools(state: AgentState) -> Literal["tools", "END"]:
+def route_tools(state: AgentState) -> Literal["tools", "final"]:
     last_message = state['messages'][-1]
     if getattr(last_message, "tool_calls", []):
         return "tools"
-    return END
-    
+    return "final"
+
+def final_response(state: AgentState) -> dict:
+    """Node that prints/returns the final response."""
+    print("FINAL:", state['messages'][-1].content)
+    return {}
+
 graph = StateGraph(AgentState)
 graph.add_node("llm", llm_node)
 graph.add_node("tools", tool_node)
+graph.add_node("final", final_response)
+
 
 graph.add_edge(START, "llm")
 graph.add_conditional_edges(
     "llm",
     route_tools,
     { "tools": "tools",
-      END: END })
+         "final": "final" }
+    )
 graph.add_edge("tools", "llm")
 
+graph.add_edge("final", END)    
 compile_graph = graph.compile()
 
 if __name__ == "__main__":
